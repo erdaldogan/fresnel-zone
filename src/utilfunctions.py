@@ -19,3 +19,18 @@ def haversine(lon1, lat1, lon2, lat2):
 
 def fresnel_radius(n, freq, d1, d2):
     return sqrt((n * freq * d1 * d2)/(d1 + d2))
+
+
+def get_circle_coords(coord, radius, tilt, vertex_no):
+    lat = coord[0]
+    lon = coord[1]
+    coord = []
+    degree_step = 360.0/vertex_no
+    d=0
+    while (d < 360.0):
+        delta_x = sin(d) * radius
+        delta_y = radius * cos(d)
+        coord.append((lat + delta_x, lon + delta_y))
+        d += degree_step
+    return coord
+
