@@ -25,10 +25,18 @@ def fresnel_radius(n, freq, d1, d2):
 
 
 def get_diff_angle(coord1, coord2):
-    d_lat = abs(coord1[1] - coord2[1])
-    d_lon = abs(coord2[0] - coord1[0])
-    y = sin(d_lon) * cos(coord2[1])
-    x = cos(coord1[1]) * sin(coord2[1]) - sin(coord1[1]) * cos(coord2[1]) * cos(d_lon)
+
+    if (coord1[0] > coord2[0]):
+        master = coord1
+        slave = coord2
+    else:
+        master = coord2
+        slave = coord1
+
+    print("MAT", master)
+    d_lon = (master[0] - slave[0])
+    y = sin(d_lon) * cos(master[1])
+    x = cos(slave[1]) * sin(master[1]) - sin(slave[1]) * cos(master[1]) * cos(d_lon)
     return atan2(y, x) * 180.0/pi  #rad to deg conv
 
 def rotate_point(point, origin, angle):
@@ -56,8 +64,6 @@ def get_circle_coords(coord, radius, diff_angle, vertex_no):
         (x, y) = rotate_point(point=(lat + delta_lat, lon + delta_long),
                           origin=coord, angle=diff_angle)
         coord_out.append((x, y, h + delta_h))
-        #coord_out.append((lat + delta_lat, lon + delta_long, h + delta_h))
-
         d += degree_step
     return coord_out
 
